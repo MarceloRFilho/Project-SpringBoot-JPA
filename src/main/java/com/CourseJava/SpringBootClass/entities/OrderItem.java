@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import com.CourseJava.SpringBootClass.entities.pk.OrderItemPK;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order_item")
+@JsonPropertyOrder({"quantity", "price", "subTotal"})
 public class OrderItem {
 
 	@EmbeddedId
@@ -39,6 +41,9 @@ public class OrderItem {
 		id.setOrder(order);
 	}
 	
+	public Double getSubTotal() {
+		return price * quantity;
+	}
 	
 	public Product getProduct() {
 		return id.getProduct();
@@ -63,6 +68,8 @@ public class OrderItem {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	
 
 	@Override
 	public int hashCode() {

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.CourseJava.SpringBootClass.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -22,6 +23,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order")
+@JsonPropertyOrder({"id", "date", "client", "orderStatus","payment", "orderItem", "total"})
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -81,7 +83,7 @@ public class Order implements Serializable {
 		}
 	}
 
-	public User getCliet() {
+	public User getClient() {
 		return client;
 	}
 
@@ -99,6 +101,14 @@ public class Order implements Serializable {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+	
+	public Double getTotal() {
+		Double sum = 0.0;
+		for(OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
